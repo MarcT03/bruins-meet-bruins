@@ -1,23 +1,20 @@
 const PORT = 8000   //place holder port
 
 const express = require('express')
-const { MongoClient } = require('mongodb')
+const cors = require('cors')
+const authRoute = require('./routes/authRoute')
 
-//temp uri link, will convert to hidden with env later
-const uri = 'mongodb+srv://cs35l:GoBruins12345@cluster1.cdta9.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1' 
-
-
+ 
+//middleware
 const app = express()
+app.use(cors())
+app.use(express.json())
 
-app.listen(PORT, () => console.log('Server is runing on: ' + PORT))
+app.use('/', authRoute)
 
 //callback function syntax, client sending requests to server,
 //for example, user fills in login information, this needs to be sent to backend server to authenticate
 app.get("/", (req, res) => {
-    res.json('Hello APP!')
-})
-
-app.post("/signup", (req, res) => {
     res.json('Hello APP!')
 })
 
@@ -37,3 +34,5 @@ app.get("/users", async (req, res) => {
         await client.close()
     }
 })
+
+app.listen(PORT, () => console.log('Server is runing on: ' + PORT))
